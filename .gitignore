@@ -1,2 +1,9 @@
 tvm
 onnx
+*.tar.xz
+*llvm*
+.pkl_memoize_py3
+imagenet_cat.npz 
+predictions.npz 
+resnet50-v2-7-tvm.tar 
+resnet50-v2-7.onnx
