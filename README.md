@@ -5,6 +5,7 @@
 
 ### [Install TVM](https://tvm.apache.org/docs/install/index.html) from source for Ubuntu 20.04
 
+_Installing from source gives you the maximum flexibility to configure the build effectively from the official source releases._
 
 1. Clone the repository 
 ```bash
@@ -77,21 +78,49 @@ python3 scripts/create_sample_outputs_for_resnet.py
 rm imagenet_cat.npz predictions.npz resnet50-v2-7-tvm.tar resnet50-v2-7.onnx
 ```
 
-### [Install & working with TVM](https://tvm.apache.org/docs/install/docker.html) and Docker Images (easier, but best performance)
+### [Install & working with TVM](https://tvm.apache.org/docs/install/docker.html) and Docker Images (easier)
 
-1. Clone the repository 
+I created `Dockerfiles` based on [OctoML TVM Container](https://github.com/octoml/public-tvm-docker) containers. The Container exposes two `build-args`. One for the `tvm` version called `TVM_HASH`, default is currently `v0.8.0` and one for `llvm`, default is currently `13`
+
+1. build container
 ```bash
-git clone --recursive https://github.com/apache/tvm tvm
+docker build -t tvm_cpu -f docker/Dockerfile.cpu .
 ```
-2. Build and start a container (without `.devcontainer`)
-```Bash
-./tvm/docker/bash.sh tvm.ci_cpu --dry-run
+2. run container
+```bash
+docker run -t -i tvm_cpu 
+```
+
+#### Alternatively if you are using VSCode you can leverage [`Dev Container`](https://code.visualstudio.com/docs/remote/containers)
+
+The Visual Studio Code Remote - Containers extension lets you use a Docker container as a full-featured development environment. It allows you to open any folder inside (or mounted into) a container and take advantage of Visual Studio Code's full feature set.
+
+You can either use the [devcontainer-cli](https://code.visualstudio.com/docs/remote/devcontainer-cli) or just run in the command palette "reopen in devcontainer" or click on the button of the pop up.
+
+![open dev container](./docs/open-dev-container.png)
+
+
+### Instal TVM using OctoMLs [`tvm-build`](https://github.com/octoml/tvm-build) rust library
+
+0. make sure you have the rust toolchain set up
+
+1. install tvm-build
+```bash
+cargo install tvm-build
 ```
 
 
-docker run --pid=host -p 8888:8888 --volume /Users/philipp/Projects/personal/tvm:/workspace tvmai/demo-cpu 
+
+### Installing the [TVM Runtime only for running predictions](https://tvm.apache.org/docs/how_to/deploy/index.html#deploy-and-integration)
+
+TODO:
 
 
 ## Resources
 
+* [Apache TVM Repository](https://github.com/apache/tvm)
 * [BERT Pytorch](https://github.com/t-vi/pytorch-tvmisc/tree/master/transformers-pytorch-tvm/)
+* [Sparse a BERT Model](https://github.com/apache/tvm/blob/main/gallery/how_to/deploy_models/deploy_sparse.py)
+* [OctoML TVM Container](https://github.com/octoml/public-tvm-docker)
+* [OctoML TVM Build Rust CLI](https://github.com/octoml/tvm-build)
+* [BERT Test](https://github.com/masahi/torchscript-to-tvm/blob/master/transformers/test_bert.py)
